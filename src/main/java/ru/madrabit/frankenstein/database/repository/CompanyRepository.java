@@ -3,6 +3,7 @@ package ru.madrabit.frankenstein.database.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 import ru.madrabit.frankenstein.bpp.Auditing;
 import ru.madrabit.frankenstein.bpp.InjectBean;
 import ru.madrabit.frankenstein.bpp.Transaction;
@@ -15,14 +16,21 @@ import java.util.Optional;
 
 @Transaction
 @Auditing
+@Repository
 public class CompanyRepository implements CrudRepository<Integer, Company> {
 
     //    @Qualifier("pool1")
-    private ConnectionPool pool1;
-    @Autowired
-    private List<ConnectionPool> pools;
-    @Value("${db.pool.size}")
-    private Integer poolSize;
+    private final ConnectionPool pool1;
+    private final List<ConnectionPool> pools;
+    private final Integer poolSize;
+
+    public CompanyRepository(ConnectionPool pool1,
+                             List<ConnectionPool> pools,
+                             @Value("${db.pool.size}") Integer poolSize) {
+        this.pool1 = pool1;
+        this.pools = pools;
+        this.poolSize = poolSize;
+    }
 
     @PostConstruct
     private void init() {
