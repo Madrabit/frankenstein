@@ -1,5 +1,6 @@
 package ru.madrabit.frankenstein.database.repository;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import ru.madrabit.frankenstein.database.pool.ConnectionPool;
 
@@ -7,7 +8,7 @@ import ru.madrabit.frankenstein.database.pool.ConnectionPool;
 public class UserRepository {
     private final ConnectionPool connectionPool;
 
-    public UserRepository(ConnectionPool connectionPool) {
+    public UserRepository(@Qualifier("pool2") ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
 }
