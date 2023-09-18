@@ -25,8 +25,9 @@ public class ApplicationConfiguration {
     }
 
 
+    @Profile("prod|web")
     @Bean
-    public UserRepository userRepository(ConnectionPool pool2) {
+    public UserRepository userRepository2(ConnectionPool pool2) {
         return new UserRepository(pool2);
     }
 
