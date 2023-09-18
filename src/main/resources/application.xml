@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="application.properties"/>
+<!--   <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">-->
+<!--       <property name="locations" value="classpath:application.properties"/>-->
+<!--   </bean>-->
+
+    <bean class="ru.madrabit.frankenstein.bfpp.LogBeanFactoryPostProcessor" />
+    <bean class="ru.madrabit.frankenstein.bfpp.VerifyPropretiesBeanFactoryPostProseccor" />
+    <bean id="driver" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="${db.driver}"/>
+    </bean>
+    <bean id="pool1" name="p1,p2,p3" class="ru.madrabit.frankenstein.database.pool.ConnectionPool"
+        init-method="init"
+          destroy-method="destroy"
+    >
+        <constructor-arg name="username" type="java.lang.String" value="${db.username}"/>
+        <constructor-arg name="poolSize" type="java.lang.Integer" value="${db.pool.size}"/>
+        <constructor-arg name="args" type="java.util.List">
+            <list>
+                <value>--arg1=value1</value>
+                <value>--arg1=value1</value>
+                <ref bean="driver"/>
+            </list>
+        </constructor-arg>
+        <constructor-arg name="properties" type="java.util.Map">
+           <null/>
+        </constructor-arg>
+        <property name="properties">
+            <map>
+                <entry  key="url" value="postgres"/>
+                <entry  key="password" value="123456"/>
+                <entry key="driver" value-ref="driver"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="companyRepository" class="ru.madrabit.frankenstein.database.pool.CompanyRepository" factory-method="of">
+        <constructor-arg ref="pool1"/>
+    </bean>
+
+<!--    <bean id="pool2" name="p4" class="ru.madrabit.frankenstein.database.pool.ConnectionPool"/>-->
+
+
+</beans>
