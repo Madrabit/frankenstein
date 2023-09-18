@@ -5,6 +5,7 @@ import ru.madrabit.frankenstein.config.ApplicationConfiguration;
 import ru.madrabit.frankenstein.database.entity.Company;
 import ru.madrabit.frankenstein.database.pool.ConnectionPool;
 import ru.madrabit.frankenstein.database.repository.CrudRepository;
+import ru.madrabit.frankenstein.service.CompanyService;
 
 public class ApplicationRunner {
     public static void main(String[] args) {
@@ -14,8 +15,8 @@ public class ApplicationRunner {
             context.refresh();
             ConnectionPool connectionPool = context.getBean("pool1", ConnectionPool.class);
             System.out.println(connectionPool);
-            CrudRepository<Integer, Company> companyRepository = context.getBean("companyRepository", CrudRepository.class);
-            System.out.println(companyRepository.findById(1));
+            CompanyService companyService = context.getBean("companyService", CompanyService.class);
+            System.out.println(companyService.findById(1));
 
         }
    }
