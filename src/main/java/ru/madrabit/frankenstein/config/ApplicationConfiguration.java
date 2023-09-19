@@ -9,7 +9,6 @@ import ru.madrabit.frankenstein.web.config.WebConfiguration;
 
 @Configuration
 @PropertySource("classpath:application.properties")
-@ComponentScan(basePackages = "ru.madrabit.frankenstein")
 @Import(WebConfiguration.class)
 public class ApplicationConfiguration {
 
