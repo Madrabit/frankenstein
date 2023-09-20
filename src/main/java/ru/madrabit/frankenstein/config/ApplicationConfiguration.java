@@ -8,7 +8,7 @@ import ru.madrabit.frankenstein.database.repository.UserRepository;
 import ru.madrabit.frankenstein.web.config.WebConfiguration;
 
 @Configuration
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:application.yml")
 @Import(WebConfiguration.class)
 public class ApplicationConfiguration {
 
