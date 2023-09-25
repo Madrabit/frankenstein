@@ -16,5 +16,11 @@ db:
       timeout: 1
     - size: 2
       timeout: 2
-
+logging:
+  level:
+    root: warn
+    ru.madrabit.frankenstein.database.pool.ConnectionPool: INFO
+  file:
+    name: log_file.log
+    path: /
 #spring.profiles.active:qa

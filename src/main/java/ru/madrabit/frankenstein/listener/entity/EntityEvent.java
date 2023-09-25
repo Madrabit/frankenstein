@@ -13,5 +13,16 @@ public class EntityEvent extends ApplicationEvent {
         this.accessType = accessType;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof EntityEvent that)) return false;
 
+        return accessType == that.accessType;
+    }
+
+    @Override
+    public int hashCode() {
+        return accessType != null ? accessType.hashCode() : 0;
+    }
 }
