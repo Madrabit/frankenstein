@@ -18,9 +18,21 @@ db:
       timeout: 2
 logging:
   level:
-    root: warn
+    root: INFO
     ru.madrabit.frankenstein.database.pool.ConnectionPool: INFO
   file:
     name: log_file.log
     path: /
 #spring.profiles.active:qa
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/postgres
+    username: postgres
+    password: pass
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    format-sql: true
+    hibernate:
+      ddl-auto: validate
+

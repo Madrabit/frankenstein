@@ -18,6 +18,7 @@ import ru.madrabit.frankenstein.dto.CompanyReadDto;
 import ru.madrabit.frankenstein.listener.entity.AccessType;
 import ru.madrabit.frankenstein.listener.entity.EntityEvent;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.any;
@@ -37,7 +38,7 @@ class CompanyServiceTest {
 
     @Test
     void findById() {
-        Mockito.doReturn(Optional.of(new Company(COMPANY_ID)))
+        Mockito.doReturn(Optional.of(new Company(COMPANY_ID, null, Collections.emptyMap())))
                 .when(crudRepository).findById(COMPANY_ID);
 
         Optional<CompanyReadDto> actualResult = companyService.findById(COMPANY_ID);
