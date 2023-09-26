@@ -3,6 +3,7 @@ package ru.madrabit.frankenstein.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.madrabit.frankenstein.database.entity.Company;
 import ru.madrabit.frankenstein.database.repository.CrudRepository;
 import ru.madrabit.frankenstein.dto.CompanyReadDto;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CompanyService {
     private final CrudRepository<Integer, Company> crudRepository;
     private final UserService userService;

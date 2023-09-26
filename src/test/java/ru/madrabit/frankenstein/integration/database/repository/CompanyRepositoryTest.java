@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 import ru.madrabit.frankenstein.bpp.Transaction;
 import ru.madrabit.frankenstein.database.entity.Company;
 import ru.madrabit.frankenstein.integration.service.annotation.IT;
@@ -17,17 +18,24 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @IT
 @RequiredArgsConstructor
-@Transactional
 //@Commit
 class CompanyRepositoryTest {
 
     private final EntityManager entityManager;
-
+    private final TransactionTemplate transactionTemplate;
     @Test
     void findById() {
-        Company company = entityManager.find(Company.class, 1);
-        assertNotNull(company);
-        assertThat(company.getLocales()).hasSize(2);
+        transactionTemplate.executeWithoutResult(tx -> {
+            try {
+                Company company = entityManager.find(Company.class, 1);
+                assertNotNull(company);
+                assertThat(company.getLocales()).hasSize(2);
+            } catch (Exception e) {
+                // Свой эксепшен, иначе будет выбрасываться транзакционный неизвестный
+                throw new RuntimeException(e);
+            }
+        });
+
     }
 
     @Test
@@ -38,7 +46,9 @@ class CompanyRepositoryTest {
                         "ru", "Apple описание",
                         "en", "Apple description"
                 )).build();
-        entityManager.persist(company);
+        Company apple = entityManager.find(Company.class, 4);
+        if (apple == null)
+            entityManager.persist(company);
         assertNotNull(company);
     }
 
