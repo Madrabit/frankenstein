@@ -3,6 +3,8 @@ package ru.madrabit.frankenstein.integration.database.repository;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import ru.madrabit.frankenstein.database.entity.Roles;
 import ru.madrabit.frankenstein.database.entity.User;
 import ru.madrabit.frankenstein.database.repository.UserRepository;
@@ -39,6 +41,21 @@ class UserRepositoryTest {
         User theSameIvan = userRepository.getById(1L);
         assertSame(Roles.USER, theSameIvan.getRole());
 
-
     }
+
+    @Test
+    void checkPageable() {
+        PageRequest pageRequest = PageRequest.of(1, 2, Sort.by("id"));
+        List<User> result = userRepository.findAllBy(pageRequest);
+    }
+
+    @Test
+    void checkSort() {
+        Sort.TypedSort<User> sortedBy = Sort.sort(User.class);
+        Sort sort = sortedBy.by(User::getFirstname).and(sortedBy.by(User::getLastname));
+        List<User> allUsers = userRepository.findTop3ByBirthDateBefore(LocalDate.now(), sort);
+        assertThat(allUsers).hasSize(3);
+    }
+
+
 }

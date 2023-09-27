@@ -2,6 +2,8 @@ package ru.madrabit.frankenstein.database.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,6 +13,7 @@ import ru.madrabit.frankenstein.database.entity.User;
 import ru.madrabit.frankenstein.database.pool.ConnectionPool;
 
 import javax.management.relation.Role;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -26,4 +29,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("update User u set u.role = :role where u.id in (:ids)")
     int updateRole(Roles role, Long... ids);
+
+    List<User> findTop3ByBirthDateBefore(LocalDate birthDate, Sort sort);
+
+    List<User> findAllBy(Pageable pageable);
 }
