@@ -11,6 +11,7 @@ import ru.madrabit.frankenstein.database.repository.CompanyRepository;
 import ru.madrabit.frankenstein.integration.service.annotation.IT;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import java.util.Map;
 import java.util.Optional;
@@ -43,7 +44,9 @@ class CompanyRepositoryTest {
 
     @Test
     void checkFindByQueries() {
-        companyRepository.findByName("Apple");
+    entityManager.createNamedQuery("findByName", Company.class)
+            .setParameter("name", "apple").getResultList();
+
         companyRepository.findAllByNameContainingIgnoreCase("a");
     }
 
