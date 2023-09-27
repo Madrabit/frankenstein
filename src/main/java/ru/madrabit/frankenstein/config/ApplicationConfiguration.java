@@ -24,15 +24,6 @@ public class ApplicationConfiguration {
     }
 
 
-    @Profile("prod|web")
-    @Bean
-    public UserRepository userRepository2(ConnectionPool pool2) {
-        return new UserRepository(pool2);
-    }
 
-    @Bean
-    public UserRepository userRepository3() {
-        return new UserRepository(pool3());
-    }
 }
 
