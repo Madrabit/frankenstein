@@ -3,6 +3,7 @@ package ru.madrabit.frankenstein.integration.database.repository;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import ru.madrabit.frankenstein.database.entity.Roles;
@@ -45,8 +46,14 @@ class UserRepositoryTest {
 
     @Test
     void checkPageable() {
-        PageRequest pageRequest = PageRequest.of(1, 2, Sort.by("id"));
-        List<User> result = userRepository.findAllBy(pageRequest);
+        PageRequest pageRequest = PageRequest.of(0, 2, Sort.by("id"));
+        Page<User> page = userRepository.findAllBy(pageRequest);
+        page.forEach(user -> System.out.println(user.getId()));
+
+        while (page.hasNext()) {
+            page = userRepository.findAllBy(page.nextPageable());
+            page.forEach(user -> System.out.println(user.getId()));
+        }
     }
 
     @Test
