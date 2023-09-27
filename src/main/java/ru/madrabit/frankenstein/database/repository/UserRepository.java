@@ -6,16 +6,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 import ru.madrabit.frankenstein.database.entity.Roles;
 import ru.madrabit.frankenstein.database.entity.User;
 import ru.madrabit.frankenstein.database.pool.ConnectionPool;
 
 import javax.management.relation.Role;
+import javax.persistence.LockModeType;
+import javax.persistence.QueryHint;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -33,6 +32,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("update User u set u.role = :role where u.id in (:ids)")
     int updateRole(Roles role, Long... ids);
 
+    @QueryHints(@QueryHint(name = "org.hibernate.fetchSize", value = "50"))
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     List<User> findTop3ByBirthDateBefore(LocalDate birthDate, Sort sort);
 
     @EntityGraph(attributePaths = {"company", "company.locales"})
