@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
+import org.springframework.test.context.jdbc.Sql;
 import ru.madrabit.frankenstein.database.entity.Roles;
 import ru.madrabit.frankenstein.database.entity.User;
 import ru.madrabit.frankenstein.database.repository.UserRepository;
@@ -23,6 +24,9 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 @IT
 @RequiredArgsConstructor
+@Sql({
+        "classpath:sql/data.sql"
+})
 class UserRepositoryTest {
 
 

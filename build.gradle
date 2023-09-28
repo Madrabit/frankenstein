@@ -6,8 +6,6 @@ plugins {
     id("com.ewerk.gradle.plugins.querydsl") version "1.0.10"
 
 
-
-
 }
 
 group = 'org.example'
@@ -27,8 +25,10 @@ dependencies {
     implementation 'org.postgresql:postgresql'
     implementation('org.springframework.data:spring-data-envers')
     implementation('com.querydsl:querydsl-jpa')
+    implementation 'com.querydsl:querydsl-core:5.0.0'
     annotationProcessor('com.querydsl:querydsl-apt')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation("com.h2database:h2")
 
 }
 
