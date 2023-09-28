@@ -1,7 +1,6 @@
 package ru.madrabit.frankenstein.integration.database.repository;
 
 import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,15 +8,15 @@ import org.springframework.data.domain.Sort;
 import ru.madrabit.frankenstein.database.entity.Roles;
 import ru.madrabit.frankenstein.database.entity.User;
 import ru.madrabit.frankenstein.database.repository.UserRepository;
-import ru.madrabit.frankenstein.dto.PersonalInfo;
 import ru.madrabit.frankenstein.dto.PersonalInfo2;
+import ru.madrabit.frankenstein.dto.UserFilter;
 import ru.madrabit.frankenstein.integration.service.annotation.IT;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 @IT
 @RequiredArgsConstructor
@@ -69,6 +68,13 @@ class UserRepositoryTest {
     @Test
     void checkProjection() {
         List<PersonalInfo2> users = userRepository.findAllByCompanyId(1);
+        System.out.println();
+    }
+
+    @Test
+    void checkCustomImplementation() {
+        UserFilter filter = new UserFilter(null, "%ov%", LocalDate.now());
+        List<User> users = userRepository.findAllByFilter(filter);
         System.out.println();
     }
 
