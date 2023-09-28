@@ -9,6 +9,8 @@ import org.springframework.data.domain.Sort;
 import ru.madrabit.frankenstein.database.entity.Roles;
 import ru.madrabit.frankenstein.database.entity.User;
 import ru.madrabit.frankenstein.database.repository.UserRepository;
+import ru.madrabit.frankenstein.dto.PersonalInfo;
+import ru.madrabit.frankenstein.dto.PersonalInfo2;
 import ru.madrabit.frankenstein.integration.service.annotation.IT;
 
 import java.time.LocalDate;
@@ -64,5 +66,10 @@ class UserRepositoryTest {
         assertThat(allUsers).hasSize(3);
     }
 
+    @Test
+    void checkProjection() {
+        List<PersonalInfo2> users = userRepository.findAllByCompanyId(1);
+        System.out.println();
+    }
 
 }

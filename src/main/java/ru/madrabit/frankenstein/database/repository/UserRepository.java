@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import ru.madrabit.frankenstein.database.entity.Roles;
 import ru.madrabit.frankenstein.database.entity.User;
 import ru.madrabit.frankenstein.database.pool.ConnectionPool;
+import ru.madrabit.frankenstein.dto.PersonalInfo;
+import ru.madrabit.frankenstein.dto.PersonalInfo2;
 
 import javax.management.relation.Role;
 import javax.persistence.LockModeType;
@@ -41,5 +43,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
     countQuery = "select count(distinct u.firstname) from User u"
     )
     Page<User> findAllBy(Pageable pageable);
+
+//    List<PersonalInfo> findAllByCompanyId(Integer companyId);
+
+    <T>List<T> findAllByCompanyId(Integer companyId, Class<T> clazz);
+
+
+    @Query(nativeQuery = true,
+    value = "SELECT firstname, lastname, birth_date birthDate FROM users WHERE company_id = :companyId")
+    List<PersonalInfo2> findAllByCompanyId(Integer companyId);
 
 }
