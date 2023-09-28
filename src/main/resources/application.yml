@@ -20,6 +20,7 @@ logging:
   level:
     root: INFO
     ru.madrabit.frankenstein.database.pool.ConnectionPool: INFO
+    org.springframework.jdbc.core: TRACE
   file:
     name: log_file.log
     path: /

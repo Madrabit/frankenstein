@@ -1,6 +1,7 @@
 package ru.madrabit.frankenstein.integration.database.repository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,6 +10,7 @@ import org.springframework.test.annotation.Commit;
 import ru.madrabit.frankenstein.database.entity.Roles;
 import ru.madrabit.frankenstein.database.entity.User;
 import ru.madrabit.frankenstein.database.repository.UserRepository;
+import ru.madrabit.frankenstein.dto.PersonalInfo;
 import ru.madrabit.frankenstein.dto.PersonalInfo2;
 import ru.madrabit.frankenstein.dto.UserFilter;
 import ru.madrabit.frankenstein.integration.service.annotation.IT;
@@ -86,6 +88,13 @@ class UserRepositoryTest {
         ivan.setBirthDate(ivan.getBirthDate().plusYears(1L));
         userRepository.flush();
         System.out.println();
+    }
+
+    @Test
+    void checkJdbcTemplate() {
+        List<PersonalInfo> users = userRepository.findAllByCompanyIdAndRole(1, Roles.USER);
+        System.out.println();
+
     }
 
 }
