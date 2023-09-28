@@ -78,4 +78,12 @@ class UserRepositoryTest {
         System.out.println();
     }
 
+    @Test
+    void checkAuditing() {
+        User ivan = userRepository.findById(1L).get();
+        ivan.setBirthDate(ivan.getBirthDate().plusYears(1L));
+        userRepository.flush();
+        System.out.println();
+    }
+
 }
