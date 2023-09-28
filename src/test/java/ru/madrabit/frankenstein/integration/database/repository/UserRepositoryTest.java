@@ -1,20 +1,17 @@
 package ru.madrabit.frankenstein.integration.database.repository;
 
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.test.annotation.Commit;
-import org.springframework.test.context.jdbc.Sql;
 import ru.madrabit.frankenstein.database.entity.Roles;
 import ru.madrabit.frankenstein.database.entity.User;
 import ru.madrabit.frankenstein.database.repository.UserRepository;
 import ru.madrabit.frankenstein.dto.PersonalInfo;
 import ru.madrabit.frankenstein.dto.PersonalInfo2;
 import ru.madrabit.frankenstein.dto.UserFilter;
-import ru.madrabit.frankenstein.integration.service.annotation.IT;
+import ru.madrabit.frankenstein.integration.IntegrationTestBase;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,12 +19,9 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-@IT
+
 @RequiredArgsConstructor
-@Sql({
-        "classpath:sql/data.sql"
-})
-class UserRepositoryTest {
+class UserRepositoryTest extends IntegrationTestBase {
 
 
     private final UserRepository userRepository;
@@ -79,14 +73,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void checkCustomImplementation() {
-        UserFilter filter = new UserFilter(null, "ov", LocalDate.now());
-        List<User> users = userRepository.findAllByFilter(filter);
-        System.out.println();
-    }
-
-    @Test
-    @Commit
+//    @Commit
     void checkAuditing() {
         User ivan = userRepository.findById(1L).get();
         ivan.setBirthDate(ivan.getBirthDate().plusYears(1L));

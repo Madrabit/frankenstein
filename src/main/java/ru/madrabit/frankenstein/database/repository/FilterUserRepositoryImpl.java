@@ -41,22 +41,7 @@ public class FilterUserRepositoryImpl implements FilterUserRepository {
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedJdbcTemplate;
 
-    @Override
-    public List<User> findAllByFilter(UserFilter filter) {
-        var predicate = QPredicates.builder()
-                .add(filter.firstname(), user.firstname::containsIgnoreCase)
-                .add(filter.lastname(), user.lastname::containsIgnoreCase)
-                .add(filter.birthDate(), user.birthDate::before)
-                .build();
-
-        return new JPAQuery<User>(entityManager)
-                .select(user)
-                .from(user)
-                .where(predicate)
-                .fetch();
-    }
-
-    @Override
+   @Override
     public List<PersonalInfo> findAllByCompanyIdAndRole(Integer companyId, Roles role) {
         return jdbcTemplate.query(FIND_BY_COMPANY_AND_ROLE, (rs, rowNum) ->
                 new PersonalInfo(

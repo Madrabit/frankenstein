@@ -8,7 +8,6 @@ import ru.madrabit.frankenstein.dto.UserFilter;
 import java.util.List;
 
 public interface FilterUserRepository {
-    List<User> findAllByFilter(UserFilter filter);
 
     List<PersonalInfo> findAllByCompanyIdAndRole(Integer companyId, Roles role);
 
