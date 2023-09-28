@@ -1,12 +1,14 @@
 package ru.madrabit.frankenstein.database.repository;
 
 import lombok.RequiredArgsConstructor;
+import org.aspectj.apache.bcel.classfile.InnerClass;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.stereotype.Repository;
 import ru.madrabit.frankenstein.database.entity.Roles;
 import ru.madrabit.frankenstein.database.entity.User;
@@ -21,7 +23,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 
-public interface UserRepository extends JpaRepository<User, Long>, FilterUserRepository {
+public interface UserRepository extends
+        JpaRepository<User, Long>,
+        FilterUserRepository,
+        RevisionRepository<User, Long, Integer> {
 
     @Query("select u from User u " +
             "where u.firstname like :firstName and u.lastname like :lastName")
@@ -40,17 +45,17 @@ public interface UserRepository extends JpaRepository<User, Long>, FilterUserRep
 
     @EntityGraph(attributePaths = {"company", "company.locales"})
     @Query(value = "select u from User u",
-    countQuery = "select count(distinct u.firstname) from User u"
+            countQuery = "select count(distinct u.firstname) from User u"
     )
     Page<User> findAllBy(Pageable pageable);
 
 //    List<PersonalInfo> findAllByCompanyId(Integer companyId);
 
-    <T>List<T> findAllByCompanyId(Integer companyId, Class<T> clazz);
+    <T> List<T> findAllByCompanyId(Integer companyId, Class<T> clazz);
 
 
     @Query(nativeQuery = true,
-    value = "SELECT firstname, lastname, birth_date birthDate FROM users WHERE company_id = :companyId")
+            value = "SELECT firstname, lastname, birth_date birthDate FROM users WHERE company_id = :companyId")
     List<PersonalInfo2> findAllByCompanyId(Integer companyId);
 
 }
