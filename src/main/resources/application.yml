@@ -32,8 +32,10 @@ spring:
     password: pass
     driver-class-name: org.postgresql.Driver
   jpa:
-    show-sql: true
-    format-sql: true
-    hibernate:
-      ddl-auto: validate
+    properties:
+      show-sql: true
+      format-sql: true
+      hibernate:
+        ddl-auto: validate
+        default_batch_fetch_size: 50
 

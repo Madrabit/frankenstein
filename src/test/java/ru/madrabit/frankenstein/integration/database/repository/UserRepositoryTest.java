@@ -97,4 +97,12 @@ class UserRepositoryTest {
 
     }
 
+    @Test
+    void checkBatch() {
+        List<User> users = userRepository.findAll();
+        userRepository.UpdateCompanyAndRoleNamed(users);
+        System.out.println();
+
+    }
+
 }

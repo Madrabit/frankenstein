@@ -3,6 +3,8 @@ package ru.madrabit.frankenstein.database.repository;
 import com.querydsl.jpa.impl.JPAQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import ru.madrabit.frankenstein.database.entity.Roles;
 import ru.madrabit.frankenstein.database.entity.User;
 import ru.madrabit.frankenstein.database.querydsl.QPredicates;
@@ -11,6 +13,7 @@ import ru.madrabit.frankenstein.dto.UserFilter;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Map;
 
 import static ru.madrabit.frankenstein.database.entity.QUser.user;
 
@@ -26,8 +29,17 @@ public class FilterUserRepositoryImpl implements FilterUserRepository {
                 WHERE company_id = ? AND
                 role = ?
             """;
+
+    public static final String UPDATE_COMPANY_AND_ROLE = """
+            UPDATE users
+            SET company_id = :companyId,
+             role = :role
+             WHERE id = :id;
+            """;
+
     private final EntityManager entityManager;
     private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedJdbcTemplate;
 
     @Override
     public List<User> findAllByFilter(UserFilter filter) {
@@ -52,5 +64,18 @@ public class FilterUserRepositoryImpl implements FilterUserRepository {
                         rs.getString("lastname"),
                         rs.getDate("birth_date").toLocalDate()
                 ), companyId, role.name());
+    }
+
+    @Override
+    public void UpdateCompanyAndRoleNamed(List<User> users) {
+        MapSqlParameterSource[] args = users.stream()
+                .map(user -> Map.of(
+                        "companyId", user.getCompany().getId(),
+                        "role", user.getRole().name(),
+                        "id", user.getId()
+                        ))
+                .map(MapSqlParameterSource::new)
+                .toArray(MapSqlParameterSource[]::new);
+        namedJdbcTemplate.batchUpdate(UPDATE_COMPANY_AND_ROLE, args);
     }
 }
