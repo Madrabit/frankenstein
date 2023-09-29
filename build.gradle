@@ -28,6 +28,7 @@ dependencies {
     implementation('org.springframework.data:spring-data-envers')
     implementation('com.querydsl:querydsl-jpa')
     implementation 'com.querydsl:querydsl-core:5.0.0'
+    implementation('org.liquibase:liquibase-core')
     annotationProcessor('com.querydsl:querydsl-apt')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation("org.testcontainers:postgresql:${versions.testcontainers}")
