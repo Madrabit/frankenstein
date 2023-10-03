@@ -1,4 +1,6 @@
 package ru.madrabit.frankenstein.dto;
 
-public record CompanyReadDto(Integer id) {
+import lombok.Value;
+
+public record CompanyReadDto(Integer id, String name) {
 }

@@ -25,7 +25,7 @@ public class CompanyService {
                 .map(
                         company -> {
                             publisher.publishEvent(new EntityEvent(company, AccessType.READ));
-                            return new CompanyReadDto(company.getId());
+                            return new CompanyReadDto(company.getId(), null);
                         });
     }
 }

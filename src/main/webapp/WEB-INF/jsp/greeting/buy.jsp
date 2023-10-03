@@ -5,6 +5,6 @@
     <title>Buy</title>
 </head>
 <body>
-Buy!
+Buy ${sessionScope.userReadDTO.username}!
 </body>
 </html>
