@@ -36,7 +36,7 @@ public class User extends AuditingEntity<Long> {
     @Column(unique = true, nullable = false)
     private String lastname;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = true)
     private LocalDate birthDate;
 
     @Enumerated(EnumType.STRING)

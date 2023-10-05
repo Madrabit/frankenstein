@@ -27,6 +27,8 @@ logging:
 #spring.profiles.active:qa
 spring:
   mvc:
+    format:
+      date: iso
     view:
       prefix: /WEB-INF/jsp/
       suffix: .jsp
@@ -42,4 +44,4 @@ spring:
       hibernate:
         ddl-auto: validate
         default_batch_fetch_size: 50
-
+    open-in-view: false

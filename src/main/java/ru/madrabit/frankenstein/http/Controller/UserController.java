@@ -32,19 +32,9 @@ public class UserController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-//    @GetMapping("/{id}")
-//    public String findById2(Model model, @PathVariable Long id) {
-//        UserReadDTO dto = userService.findById(id)
-//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-//        model.addAttribute("users", dto);
-//        return "user/users";
-//    }
-
-
     @PostMapping
     public String create(@ModelAttribute UserCreateEditDto user) {
-//        userService.create(user);
-        return "redirect:/users" + 25;
+        return "redirect:/users/" + userService.create(user).getId();
     }
 
     @PostMapping("/{id}/update")

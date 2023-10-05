@@ -1,21 +1,16 @@
 package ru.madrabit.frankenstein.database.repository;
 
-import com.querydsl.jpa.impl.JPAQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import ru.madrabit.frankenstein.database.entity.Roles;
 import ru.madrabit.frankenstein.database.entity.User;
-import ru.madrabit.frankenstein.database.querydsl.QPredicates;
 import ru.madrabit.frankenstein.dto.PersonalInfo;
-import ru.madrabit.frankenstein.dto.UserFilter;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
-
-import static ru.madrabit.frankenstein.database.entity.QUser.user;
 
 @RequiredArgsConstructor
 public class FilterUserRepositoryImpl implements FilterUserRepository {
