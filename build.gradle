@@ -31,6 +31,7 @@ dependencies {
     implementation 'com.querydsl:querydsl-core:5.0.0'
     implementation('org.liquibase:liquibase-core')
     implementation('org.apache.tomcat.embed:tomcat-embed-jasper')
+    implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
     annotationProcessor('com.querydsl:querydsl-apt')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation("org.testcontainers:postgresql:${versions.testcontainers}")
