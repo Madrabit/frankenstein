@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.madrabit.frankenstein.database.entity.Roles;
 import ru.madrabit.frankenstein.dto.UserCreateEditDto;
 import ru.madrabit.frankenstein.service.CompanyService;
@@ -36,8 +37,23 @@ public class UserController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/registration")
+    public String registration(Model model, @ModelAttribute("user") UserCreateEditDto user) {
+        model.addAttribute("user", user);
+        model.addAttribute("roles", Roles.values());
+        model.addAttribute("companies", companyService.findAll());
+        return "user/registration";
+    }
+
     @PostMapping
-    public String create(@ModelAttribute UserCreateEditDto user) {
+//    @ResponseStatus(HttpStatus.CREATED)
+    public String create(@ModelAttribute UserCreateEditDto user, RedirectAttributes redirectAttributes) {
+//        if (true) {
+//            redirectAttributes.addAttribute("username", user.getUsername());
+//            redirectAttributes.addAttribute("firstname", user.getFirstname());
+//            redirectAttributes.addFlashAttribute("user", user);
+//            return "redirect:/users/registration";
+//        }
         return "redirect:/users/" + userService.create(user).getId();
     }
 
