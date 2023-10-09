@@ -10,7 +10,7 @@ plugins {
 
 apply from: 'versions.gradle'
 
-group = 'org.example'
+group = 'ru.madrabit'
 version = '1.0-SNAPSHOT'
 
 repositories {

@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.madrabit.frankenstein.database.entity.Roles;
 import ru.madrabit.frankenstein.dto.UserCreateEditDto;
+import ru.madrabit.frankenstein.dto.UserFilter;
 import ru.madrabit.frankenstein.service.CompanyService;
 import ru.madrabit.frankenstein.service.UserService;
 
@@ -20,8 +21,8 @@ public class UserController {
     private final CompanyService companyService;
 
     @GetMapping
-    public String findAll(Model model) {
-        model.addAttribute("users", userService.findAll());
+    public String findAll(Model model, UserFilter filter) {
+        model.addAttribute("users", userService.findAll(filter));
         return "user/users";
     }
 

@@ -5,6 +5,11 @@
     <title>Users</title>
 </head>
 <body>
+<form action="/users">
+    <label for="firstname">Firstname:
+        <input id="firstname" name="firstname" type="text">
+    </label>
+</form>
 <div th:each="user : ${users}">
     <a th:href="@{'/users/' + ${user.id}}" th:text="|${user.id}. ${user.username}|">User</a>
 </div>

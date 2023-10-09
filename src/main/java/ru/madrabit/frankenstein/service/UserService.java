@@ -8,6 +8,7 @@ import ru.madrabit.frankenstein.database.entity.User;
 import ru.madrabit.frankenstein.database.repository.CompanyRepository;
 import ru.madrabit.frankenstein.database.repository.UserRepository;
 import ru.madrabit.frankenstein.dto.UserCreateEditDto;
+import ru.madrabit.frankenstein.dto.UserFilter;
 import ru.madrabit.frankenstein.dto.UserReadDTO;
 import ru.madrabit.frankenstein.mapper.UserCreatEditMapper;
 import ru.madrabit.frankenstein.mapper.UserReadMapper;
@@ -23,6 +24,12 @@ public class UserService {
     private final UserReadMapper userReadMapper;
     private final UserCreatEditMapper creatEditMapper;
 
+
+    public List<UserReadDTO> findAll(UserFilter filter) {
+        return userRepository.findAllByFilter(filter).stream()
+                .map(userReadMapper::map)
+                .toList();
+    }
     public List<UserReadDTO> findAll() {
         return userRepository.findAll().stream()
                 .map(userReadMapper::map)
