@@ -1,7 +1,6 @@
 package ru.madrabit.frankenstein.service;
 
 import lombok.RequiredArgsConstructor;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.madrabit.frankenstein.database.entity.Roles;
 import ru.madrabit.frankenstein.dto.UserCreateEditDto;
@@ -49,7 +48,7 @@ class UserServiceTest extends IntegrationTestBase {
         UserReadDTO actualResult = userService.create(userDto);
         assertEquals(userDto.getUsername(), actualResult.getUsername());
         assertEquals(userDto.getBirthDate(), actualResult.getBirthDate());
-        assertEquals(userDto.getCompanyId(), actualResult.getCompanyReadDto().id());
+        assertEquals(userDto.getCompanyId(), actualResult.getCompany().id());
         assertSame(userDto.getRole(), actualResult.getRole());
     }
 
@@ -68,7 +67,7 @@ class UserServiceTest extends IntegrationTestBase {
         actualResult.ifPresent(user ->  {
             assertEquals(userDto.getUsername(), user.getUsername());
             assertEquals(userDto.getBirthDate(), user.getBirthDate());
-            assertEquals(userDto.getCompanyId(), user.getCompanyReadDto().id());
+            assertEquals(userDto.getCompanyId(), user.getCompany().id());
             assertSame(userDto.getRole(), user.getRole());
         });
     }

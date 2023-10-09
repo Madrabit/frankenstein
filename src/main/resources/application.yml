@@ -18,6 +18,10 @@ db:
       timeout: 2
 logging:
   level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type.descriptor.sql.BasicBinder: TRACE
     root: INFO
     ru.madrabit.frankenstein.database.pool.ConnectionPool: INFO
     org.springframework.jdbc.core: TRACE

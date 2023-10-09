@@ -6,8 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import ru.madrabit.frankenstein.database.entity.Roles;
 import ru.madrabit.frankenstein.dto.UserCreateEditDto;
-import ru.madrabit.frankenstein.dto.UserReadDTO;
+import ru.madrabit.frankenstein.service.CompanyService;
 import ru.madrabit.frankenstein.service.UserService;
 
 @Controller
@@ -15,6 +16,7 @@ import ru.madrabit.frankenstein.service.UserService;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final CompanyService companyService;
 
     @GetMapping
     public String findAll(Model model) {
@@ -26,8 +28,10 @@ public class UserController {
     public String findById(Model model, @PathVariable Long id) {
         return userService.findById(id)
                 .map(userReadDTO -> {
-                    model.addAttribute("users", userReadDTO);
-                    return "user/users";
+                    model.addAttribute("user", userReadDTO);
+                    model.addAttribute("roles", Roles.values());
+                    model.addAttribute("companies", companyService.findAll());
+                    return "user/user";
                 })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }

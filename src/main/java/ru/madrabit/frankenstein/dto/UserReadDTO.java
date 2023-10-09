@@ -9,8 +9,9 @@ import java.time.LocalDate;
 public class UserReadDTO {
     Long id;
     String username;
+    String firstname;
     String lastname;
     LocalDate birthDate;
     Roles role;
-    CompanyReadDto companyReadDto;
+    CompanyReadDto company;
 }
