@@ -7,10 +7,19 @@
 <body>
 <form action="/users">
     <label for="firstname">Firstname:
-        <input id="firstname" name="firstname" type="text">
+        <input id="firstname" name="firstname" type="text" th:value="${filter.firstname()}">
     </label>
+    <div>
+        <label for="page">
+            <input name="page" id="page" type="text" th:value="${users.metadata.page}">
+        </label>
+        <label for="size">
+            <input name="size" id="size" type="text" th:value="${users.metadata.size}">
+        </label>
+    </div>
+    <button type="submit">Filter</button>
 </form>
-<div th:each="user : ${users}">
+<div th:each="user : ${users.content}">
     <a th:href="@{'/users/' + ${user.id}}" th:text="|${user.id}. ${user.username}|">User</a>
 </div>
 </body>

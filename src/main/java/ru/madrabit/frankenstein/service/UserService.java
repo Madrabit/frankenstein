@@ -1,10 +1,13 @@
 package ru.madrabit.frankenstein.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.madrabit.frankenstein.bpp.Transaction;
 import ru.madrabit.frankenstein.database.entity.User;
+import ru.madrabit.frankenstein.database.querydsl.QPredicates;
 import ru.madrabit.frankenstein.database.repository.CompanyRepository;
 import ru.madrabit.frankenstein.database.repository.UserRepository;
 import ru.madrabit.frankenstein.dto.UserCreateEditDto;
@@ -16,6 +19,8 @@ import ru.madrabit.frankenstein.mapper.UserReadMapper;
 import java.util.List;
 import java.util.Optional;
 
+import static ru.madrabit.frankenstein.database.entity.QUser.user;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -25,10 +30,14 @@ public class UserService {
     private final UserCreatEditMapper creatEditMapper;
 
 
-    public List<UserReadDTO> findAll(UserFilter filter) {
-        return userRepository.findAllByFilter(filter).stream()
-                .map(userReadMapper::map)
-                .toList();
+    public Page<UserReadDTO> findAll(UserFilter filter, Pageable pageable) {
+        var predicate = QPredicates.builder()
+                .add(filter.firstname(), user.firstname::containsIgnoreCase)
+                .add(filter.lastname(), user.lastname::containsIgnoreCase)
+                .add(filter.birthDate(), user.birthDate::before)
+                .build();
+        return userRepository.findAll(predicate, pageable)
+                .map(userReadMapper::map);
     }
     public List<UserReadDTO> findAll() {
         return userRepository.findAll().stream()
