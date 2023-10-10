@@ -18,6 +18,8 @@ import ru.madrabit.frankenstein.dto.UserFilter;
 import ru.madrabit.frankenstein.dto.UserReadDTO;
 import ru.madrabit.frankenstein.service.CompanyService;
 import ru.madrabit.frankenstein.service.UserService;
+import ru.madrabit.frankenstein.validation.group.CreateAction;
+import ru.madrabit.frankenstein.validation.group.UpdateAction;
 
 @Controller
 @RequestMapping("/users")
@@ -56,7 +58,7 @@ public class UserController {
 
     @PostMapping
 //    @ResponseStatus(HttpStatus.CREATED)
-    public String create(@ModelAttribute @Validated UserCreateEditDto user,
+    public String create(@ModelAttribute @Validated({Deprecated.class, CreateAction.class}) UserCreateEditDto user,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
@@ -68,7 +70,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}/update")
-    public String update(@PathVariable("id") Long id, @ModelAttribute @Validated UserCreateEditDto user) {
+    public String update(@PathVariable("id") Long id, @ModelAttribute @Validated({Deprecated.class, UpdateAction.class}) UserCreateEditDto user) {
 
         return userService.update(id, user)
                 .map(userReadDTO -> "redirect:/users/{id}")
