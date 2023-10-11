@@ -1,10 +1,13 @@
 package ru.madrabit.frankenstein.http.rest;
 
+import jdk.jfr.ContentType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +24,9 @@ import ru.madrabit.frankenstein.service.CompanyService;
 import ru.madrabit.frankenstein.service.UserService;
 import ru.madrabit.frankenstein.validation.group.CreateAction;
 import ru.madrabit.frankenstein.validation.group.UpdateAction;
+
+import static org.springframework.http.ResponseEntity.*;
+import static org.springframework.http.ResponseEntity.noContent;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -42,6 +48,21 @@ public class UserRestController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping(value = "/{id}/avatar")
+    public ResponseEntity<byte[]> findAvatar(@PathVariable("id") Long id) {
+        return userService.findAvatar(id)
+                .map(content -> ok()
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE)
+                        .contentLength(content.length)
+                        .body(content))
+                .orElseGet(notFound()::build);
+    }
+
+//    @GetMapping(value = "/{id}/avatar", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+//    public byte[] findAvatar(@PathVariable("id") Long id) {
+//        return userService.findAvatar(id)
+//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+//    }
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public UserReadDTO create(@Validated({Deprecated.class, CreateAction.class})
@@ -59,9 +80,9 @@ public class UserRestController {
 
     @DeleteMapping("/{id}/")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") Long id) {
-        if (!userService.delete(id)) {
-            new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        return userService.delete(id) ?
+                noContent().build()
+                : notFound().build();
     }
 }

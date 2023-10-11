@@ -1,10 +1,14 @@
 package ru.madrabit.frankenstein.service;
 
+import liquibase.util.StringUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 import ru.madrabit.frankenstein.bpp.Transaction;
 import ru.madrabit.frankenstein.database.entity.User;
 import ru.madrabit.frankenstein.database.querydsl.QPredicates;
@@ -28,6 +32,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserReadMapper userReadMapper;
     private final UserCreatEditMapper creatEditMapper;
+    private final ImageService imageService;
 
 
     public Page<UserReadDTO> findAll(UserFilter filter, Pageable pageable) {
@@ -50,10 +55,20 @@ public class UserService {
                 .map(userReadMapper::map);
     }
 
+    public Optional<byte[]> findAvatar(Long id) {
+        return userRepository.findById(id)
+                .map(User::getImage)
+                .filter(StringUtils::hasText)
+                .flatMap(imageService::get);
+    }
+
     @Transactional
     public UserReadDTO create(UserCreateEditDto userDto) {
         return Optional.of(userDto)
-                .map(creatEditMapper::map)
+                .map(dto -> {
+                    uploadImage(dto.getImage());
+                    return creatEditMapper.map(dto);
+                })
                 .map(userRepository::save)
                 .map(userReadMapper::map)
                 .orElseThrow();
@@ -61,13 +76,21 @@ public class UserService {
 
     @Transactional
     public Optional<UserReadDTO> update(Long id, UserCreateEditDto editDtoUser) {
-        return
-                userRepository.findById(id)
-                        .map(user -> creatEditMapper.map(editDtoUser, user))
+        return userRepository.findById(id)
+                        .map(entity -> {
+                            uploadImage(editDtoUser.getImage());
+                            return creatEditMapper.map(editDtoUser, entity);
+                        })
                         .map(userRepository::saveAndFlush)
                         .map(userReadMapper::map);
     }
 
+    @SneakyThrows
+    private void uploadImage(MultipartFile image) {
+        if(!image.isEmpty()) {
+            imageService.upload(image.getOriginalFilename(), image.getInputStream());
+        }
+    }
     @Transactional
     public boolean delete(Long id) {
         return userRepository.findById(id)

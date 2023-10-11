@@ -43,7 +43,8 @@ class UserServiceTest extends IntegrationTestBase {
                 "Test",
                 LocalDate.now(),
                 Roles.ADMIN,
-                COMPANY_1
+                COMPANY_1,
+                null
         );
         UserReadDTO actualResult = userService.create(userDto);
         assertEquals(userDto.getUsername(), actualResult.getUsername());
@@ -60,7 +61,8 @@ class UserServiceTest extends IntegrationTestBase {
                 "Test",
                 LocalDate.now(),
                 Roles.ADMIN,
-                COMPANY_1
+                COMPANY_1,
+                null
         );
         Optional<UserReadDTO> actualResult = userService.update(USER_1, userDto);
         assertThat(actualResult.isPresent());

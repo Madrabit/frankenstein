@@ -49,3 +49,6 @@ spring:
         ddl-auto: validate
         default_batch_fetch_size: 50
     open-in-view: false
+image:
+  bucket:
+    path: C:\\projects\\java\\frankenstein\\images

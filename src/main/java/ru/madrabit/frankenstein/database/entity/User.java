@@ -36,6 +36,8 @@ public class User extends AuditingEntity<Long> {
     @Column(unique = true, nullable = false)
     private String lastname;
 
+    private String image;
+
     @Column(unique = true, nullable = true)
     private LocalDate birthDate;
 

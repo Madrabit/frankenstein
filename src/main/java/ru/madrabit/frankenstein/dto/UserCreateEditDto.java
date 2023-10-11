@@ -2,6 +2,7 @@ package ru.madrabit.frankenstein.dto;
 
 import lombok.Value;
 import lombok.experimental.FieldNameConstants;
+import org.springframework.web.multipart.MultipartFile;
 import ru.madrabit.frankenstein.database.entity.Roles;
 import ru.madrabit.frankenstein.validation.group.CreateAction;
 import ru.madrabit.frankenstein.validation.UserInfo;
@@ -22,4 +23,6 @@ public class UserCreateEditDto {
     LocalDate birthDate;
     Roles role;
     Integer companyId;
+    MultipartFile image;
 }
+
