@@ -1,4 +1,4 @@
-package ru.madrabit.frankenstein.http.Controller;
+package ru.madrabit.frankenstein.http.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,7 +8,6 @@ import ru.madrabit.frankenstein.dto.UserReadDTO;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
 
 @Controller
 @RequestMapping("/api/v1")

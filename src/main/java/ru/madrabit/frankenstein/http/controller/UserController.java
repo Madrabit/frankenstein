@@ -1,4 +1,4 @@
-package ru.madrabit.frankenstein.http.Controller;
+package ru.madrabit.frankenstein.http.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
