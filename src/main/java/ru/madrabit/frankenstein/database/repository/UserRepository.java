@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.history.RevisionRepository;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 import ru.madrabit.frankenstein.database.entity.Roles;
 import ru.madrabit.frankenstein.database.entity.User;
@@ -22,6 +23,7 @@ import javax.persistence.LockModeType;
 import javax.persistence.QueryHint;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 
 public interface UserRepository extends
@@ -61,4 +63,5 @@ public interface UserRepository extends
             value = "SELECT firstname, lastname, birth_date birthDate FROM users WHERE company_id = :companyId")
     List<PersonalInfo2> findAllByCompanyId(Integer companyId);
 
+    Optional<User> findByUsername(String username);
 }

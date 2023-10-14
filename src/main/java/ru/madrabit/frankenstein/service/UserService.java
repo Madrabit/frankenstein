@@ -1,18 +1,18 @@
 package ru.madrabit.frankenstein.service;
 
-import liquibase.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import ru.madrabit.frankenstein.bpp.Transaction;
 import ru.madrabit.frankenstein.database.entity.User;
 import ru.madrabit.frankenstein.database.querydsl.QPredicates;
-import ru.madrabit.frankenstein.database.repository.CompanyRepository;
 import ru.madrabit.frankenstein.database.repository.UserRepository;
 import ru.madrabit.frankenstein.dto.UserCreateEditDto;
 import ru.madrabit.frankenstein.dto.UserFilter;
@@ -20,6 +20,7 @@ import ru.madrabit.frankenstein.dto.UserReadDTO;
 import ru.madrabit.frankenstein.mapper.UserCreatEditMapper;
 import ru.madrabit.frankenstein.mapper.UserReadMapper;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,7 @@ import static ru.madrabit.frankenstein.database.entity.QUser.user;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class UserService {
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final UserReadMapper userReadMapper;
     private final UserCreatEditMapper creatEditMapper;
@@ -101,4 +102,14 @@ public class UserService {
                 }).orElse(false);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username)
+                .map(user -> new org.springframework.security.core.userdetails.User(
+                        user.getUsername(),
+                        user.getPassword(),
+                        Collections.singleton(user.getRole())
+                ))
+                .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user: " + username));
+    }
 }
