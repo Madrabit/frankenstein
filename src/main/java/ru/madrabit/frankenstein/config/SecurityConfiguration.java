@@ -17,12 +17,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests().anyRequest().authenticated()
                 .and()
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
+                        .deleteCookies("JSESSIONID"))
 //                .httpBasic(Customizer.withDefaults());
                 .formLogin(login -> login
                         .loginPage("/login")
                         .defaultSuccessUrl("/users")
                         .permitAll());
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
