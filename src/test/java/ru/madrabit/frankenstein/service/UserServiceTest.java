@@ -2,6 +2,7 @@ package ru.madrabit.frankenstein.service;
 
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockMultipartFile;
 import ru.madrabit.frankenstein.database.entity.Roles;
 import ru.madrabit.frankenstein.dto.UserCreateEditDto;
 import ru.madrabit.frankenstein.dto.UserReadDTO;
@@ -41,10 +42,11 @@ class UserServiceTest extends IntegrationTestBase {
                 "test@gmail.com",
                 "Test",
                 "Test",
+                "Test",
                 LocalDate.now(),
                 Roles.ADMIN,
                 COMPANY_1,
-                null
+                new MockMultipartFile("test", new byte[0])
         );
         UserReadDTO actualResult = userService.create(userDto);
         assertEquals(userDto.getUsername(), actualResult.getUsername());
@@ -59,10 +61,11 @@ class UserServiceTest extends IntegrationTestBase {
                 "test@gmail.com",
                 "Test",
                 "Test",
+                "Test",
                 LocalDate.now(),
                 Roles.ADMIN,
                 COMPANY_1,
-                null
+                new MockMultipartFile("test", new byte[0])
         );
         Optional<UserReadDTO> actualResult = userService.update(USER_1, userDto);
         assertThat(actualResult.isPresent());
