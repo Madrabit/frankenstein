@@ -16,6 +16,9 @@ db:
       timeout: 1
     - size: 2
       timeout: 2
+app.common.logging:
+  enabled: true
+  level: INFO
 logging:
   level:
     org:

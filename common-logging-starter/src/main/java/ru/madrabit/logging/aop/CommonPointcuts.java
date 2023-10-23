@@ -1,4 +1,4 @@
-package ru.madrabit.frankenstein.aop;
+package ru.madrabit.logging.aop;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -18,7 +18,7 @@ public class CommonPointcuts {
     /*
         within - check class type name
      */
-    @Pointcut("within(com.dmdev.spring.service.*Service)")
+    @Pointcut("within(ru.madrabit.*.service.*Service)")
     public void isServiceLayer() {
     }
 }

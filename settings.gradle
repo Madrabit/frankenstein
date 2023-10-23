@@ -1,2 +1,3 @@
 rootProject.name = 'frankenstein'
+include 'common-logging-starter'
 
